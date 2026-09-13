@@ -1,0 +1,336 @@
+{
+	"info": {
+		"_postman_id": "8b9e6e1a-c782-4e0d-b31a-e9fa4a7e9901",
+		"name": "FinBank - Microservices RestTemplate Transfer",
+		"description": "Postman Collection kiểm thử Bài Tập Tổng Hợp 3: Giao tiếp đồng bộ giữa các Microservice bằng RestTemplate qua API Gateway cổng 8222.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8222",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Account Service",
+			"item": [
+				{
+					"name": "01. Lấy thông tin tài khoản 1001",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/1001",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"1001"
+							]
+						},
+						"description": "Lấy thông tin chi tiết tài khoản 1001"
+					},
+					"response": []
+				},
+				{
+					"name": "02. Lấy thông tin tài khoản 1002",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/1002",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"1002"
+							]
+						},
+						"description": "Lấy thông tin chi tiết tài khoản 1002"
+					},
+					"response": []
+				},
+				{
+					"name": "03. Xem số dư tài khoản 1001",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/1001/balance",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"1001",
+								"balance"
+							]
+						},
+						"description": "Xem số dư tài khoản 1001 (GET /api/accounts/{accountNumber}/balance)"
+					},
+					"response": []
+				},
+				{
+					"name": "04. Xem số dư tài khoản 1002",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/1002/balance",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"1002",
+								"balance"
+							]
+						},
+						"description": "Xem số dư tài khoản 1002 (GET /api/accounts/{accountNumber}/balance)"
+					},
+					"response": []
+				},
+				{
+					"name": "05. Trừ tiền tài khoản 1001 (Debit)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 1000000\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/1001/debit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"1001",
+								"debit"
+							]
+						},
+						"description": "Trừ tiền tài khoản (PUT /api/accounts/{accountNumber}/debit)"
+					},
+					"response": []
+				},
+				{
+					"name": "06. Cộng tiền tài khoản 1002 (Credit)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"amount\": 1000000\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/1002/credit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"1002",
+								"credit"
+							]
+						},
+						"description": "Cộng tiền tài khoản (PUT /api/accounts/{accountNumber}/credit)"
+					},
+					"response": []
+				},
+				{
+					"name": "07. Danh sách tất cả tài khoản",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts"
+							]
+						},
+						"description": "Xem danh sách toàn bộ tài khoản trong hệ thống"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Chuyển tiền (Transfer Test Cases)",
+			"item": [
+				{
+					"name": "TC1 - Chuyển 2,000,000 VND từ 1001 sang 1002 (Thành công)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fromAccountNumber\": \"1001\",\n    \"toAccountNumber\": \"1002\",\n    \"amount\": 2000000,\n    \"description\": \"Chuyển tiền thanh toán hóa đơn\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/transactions/transfer",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transactions",
+								"transfer"
+							]
+						},
+						"description": "Test case 1: Chuyển 2,000,000 từ 1001 -> 1002 -> thành công, kiểm tra số dư 2 tài khoản."
+					},
+					"response": []
+				},
+				{
+					"name": "TC1.1 - Kiểm tra số dư 1001 sau chuyển (còn 8,000,000 VND)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/1001/balance",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"1001",
+								"balance"
+							]
+						},
+						"description": "Kiểm tra số dư tài khoản nguồn giảm 2,000,000 VND"
+					},
+					"response": []
+				},
+				{
+					"name": "TC1.2 - Kiểm tra số dư 1002 sau chuyển (tăng lên 7,000,000 VND)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/accounts/1002/balance",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"accounts",
+								"1002",
+								"balance"
+							]
+						},
+						"description": "Kiểm tra số dư tài khoản đích tăng 2,000,000 VND"
+					},
+					"response": []
+				},
+				{
+					"name": "TC2 - Chuyển 100,000,000 VND từ 1001 sang 1002 (Thất bại - Thiếu số dư)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fromAccountNumber\": \"1001\",\n    \"toAccountNumber\": \"1002\",\n    \"amount\": 100000000,\n    \"description\": \"Chuyển tiền vượt quá số dư khả dụng\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/transactions/transfer",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transactions",
+								"transfer"
+							]
+						},
+						"description": "Test case 2: Chuyển 100,000,000 từ 1001 -> 1002 -> thất bại (không đủ số dư)."
+					},
+					"response": []
+				},
+				{
+					"name": "TC3 - Chuyển tiền tới tài khoản không tồn tại 9999 (Thất bại)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fromAccountNumber\": \"1001\",\n    \"toAccountNumber\": \"9999\",\n    \"amount\": 2000000,\n    \"description\": \"Chuyển tiền tới tài khoản không tồn tại\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/transactions/transfer",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transactions",
+								"transfer"
+							]
+						},
+						"description": "Test case 3: Chuyển tiền tới tài khoản không tồn tại (9999) -> thất bại."
+					},
+					"response": []
+				},
+				{
+					"name": "TC4 - Lấy danh sách toàn bộ lịch sử giao dịch",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/transactions",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"transactions"
+							]
+						},
+						"description": "Xem tất cả các bản ghi Transaction đã lưu trong database (cả SUCCESS lẫn FAILED kèm failureReason)"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

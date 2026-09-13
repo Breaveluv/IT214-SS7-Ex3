@@ -1,0 +1,6 @@
+rootProject.name = 'finbank-microservices'
+
+include 'discovery-service'
+include 'api-gateway'
+include 'account-service'
+include 'transaction-service'
